@@ -1,0 +1,19 @@
+@font-face {
+    font-family: PingFang-Light;
+    src: url("../fonts/PingFang-Light.ttf");
+}
+@font-face {
+    font-family: PingFang-SC;
+    src: url("../fonts/PingFang-SC.ttf");
+}
+html, body, #app {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    font-family: PingFang-SC;
+}
+.preview > img {
+    border: 10px solid rgb(182, 186, 192);
+    box-shadow: 3px 6px 5px rgba(0, 0, 0, 0.3);
+    max-height: 100%;
+}

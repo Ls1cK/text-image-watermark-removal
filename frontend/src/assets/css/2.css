@@ -1,0 +1,23 @@
+/* Error: Undefined mixin.
+ *    ,
+ * 60 | /   @include keyframes(spin) {
+ * 61 | |     0% { 
+ * 62 | |       @include transform(rotate(0deg));
+ * 63 | |     }
+ * 64 | |     100% {
+ * 65 | |       @include transform(rotate(360deg));
+ * 66 | |     }
+ * 67 | \   }
+ *    '
+ *   1.scss 60:3  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined mixin.\a    \2577 \a 60 \2502  \250c    @include keyframes(spin) {\a 61 \2502  \2502      0% { \a 62 \2502  \2502        @include transform(rotate(0deg));\a 63 \2502  \2502      }\a 64 \2502  \2502      100% {\a 65 \2502  \2502        @include transform(rotate(360deg));\a 66 \2502  \2502      }\a 67 \2502  \2514    }\a    \2575 \a   1.scss 60:3  root stylesheet";
+}

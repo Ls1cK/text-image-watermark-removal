@@ -148,7 +148,6 @@ export default {
             password: that.resetForm.password,
           })
           .then(function(response) {
-            console.log(response.data);
             if (parseInt(response.data.code) === 200) {
               setTimeout(() => {
                 loading.close();

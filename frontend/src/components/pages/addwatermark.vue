@@ -31,8 +31,12 @@
           <input id="watermarkText" class="form-control"  placeholder="选择文本水印，在此输入文本..."  disabled/>
       </div>
       <div class="textSize" >
-         <span class="textSize">设置文本字体大小(px)</span>
-         <el-slider id="watermarkTextSize" v-model="textSize" :min="0" :max="256" :disabled="banSlider"></el-slider>
+         <span class="textSize">设置文本字体大小(默认64px)</span>
+         <el-slider id="watermarkTextSize" v-model="textSize" :min="0" :max="128" :disabled="banSlider"></el-slider>
+      </div>
+      <div class="textSize" >
+         <span class="textSize">设置文本字体粗度（默认50）</span>
+         <el-slider id="watermarkTextWeight" v-model="textWeight" :min="0" :max="100" :disabled="banSlider"></el-slider>
       </div>
       <div id="setpos">
         <div class="inputgroup">
@@ -95,40 +99,6 @@
     <div class="right">
       <h2>预览</h2>
       <div class="preview" id="preview" ></div>
-      <!-- <div class="rightHeader">
-          <el-tooltip
-          class="item"
-          effect="light"
-          content="点我切换模式"
-          placement="right-start">
-          <div class="button r" id="button-6">
-            <input type="checkbox" class="checkbox" @click="changeModel()"/>
-            <div class="knobs"></div>
-            <div class="layer"></div>
-          </div>
-          </el-tooltip>
-          <div class="changeInfo">
-            <el-alert
-              v-if="this.changeMd === true"
-              title="欢迎使用添加水印功能"
-              description="现在的添加水印模式为-文本水印"
-              type="success"
-              center
-              show-icon
-              :closable="false">
-            </el-alert>
-            <el-alert
-              v-if="this.changeMd === false"
-              title="欢迎使用添加水印功能"
-              description="现在的添加水印模式为-图像水印"
-              type="success"
-              center
-              show-icon
-              :closable="false"
-              effect = "dark">
-            </el-alert>
-          </div>
-        </div> -->
     </div>
   </div>
 </template>
@@ -136,11 +106,11 @@
 <script>
 import watermark from "watermarkjs"
 
-
 export default {
   data() {
     return {
       textSize:64,
+      textWeight:50,
       banSlider:true,
       changeMd:true,
       original:null
@@ -203,7 +173,7 @@ setTarget(file) {
   /**
    * A listener that fires when the Text watermark image has been selected
    */
-   setTextWatermark(textWatermark,font_size) {
+   setTextWatermark(textWatermark,font_size,font_weight) {
     var preview = document.getElementById('preview'),
         img = preview.querySelector('img'),
         fontsetting = font_size +"px" + " Josefin Slab",
@@ -213,15 +183,16 @@ setTarget(file) {
       this.original = img;
     }
     //upperRight,upperLeft需要手动设置高度：为了和左下右下一致，高度设置与字体大小一致
+    // so we manually provide a y value of 48 here
     if(position==="upperRight" || position==="upperLeft"){
       watermark([this.original])
-      .image(watermark.text[position](textWatermark, fontsetting , 'black', 0.5, font_size))
+      .image(watermark.text[position](textWatermark, fontsetting , 'black', font_weight, 48))
       .then(function(marked) {
         preview.replaceChild(marked, img);
       });
     }else{
     watermark([this.original])
-      .image(watermark.text[position](textWatermark, fontsetting , 'black', 0.5))
+      .image(watermark.text[position](textWatermark, fontsetting , 'black', font_weight))
       .then(function(marked) {
         preview.replaceChild(marked, img);
       });
@@ -266,7 +237,8 @@ setTarget(file) {
           that.banSlider = false;
         }       
         if (input.type === "radio" && that.isTextWatermarkSelected()) {
-          that.setTextWatermark(document.getElementById("watermarkText").value,that.textSize);
+          let weight_text = that.textWeight/100;
+          that.setTextWatermark(document.getElementById("watermarkText").value,that.textSize,weight_text);
         }
       });
   },
@@ -306,12 +278,12 @@ setTarget(file) {
   top: 30px;
 }
 #loadimg {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 #setpos {
   color: rgb(255, 255, 255);
   border-radius: 6px;
-  margin-top: 50px;
+  margin-top: 20px;
   text-align: center;
   border-radius: 5px;
 }
@@ -333,7 +305,7 @@ setTarget(file) {
   cursor: pointer;
 }
 .input-group{
-  margin-block-start: 30px;
+  margin-block-start: 10px;
 }
 .btn .btn-primary .btn-file {
   cursor: pointer;

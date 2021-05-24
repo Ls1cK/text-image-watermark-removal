@@ -80,7 +80,7 @@ export default {
           {
             min: 6,
             max: 25,
-            message: "请输入6以上字符密码",
+            message: "请输入长度为6至25的字符密码",
             trigger: "blur",
           },
         ],

@@ -39,8 +39,10 @@
       <div class="container section-1">
         <div class="row">
           <div class="main-msg jumbotron">
-            <h3>添加水印 水印去除 示例</h3>
-            <div class="imgEmp">
+            <div>
+              <h3>基于深度学习文本图像水印去除算法仿真系统</h3>
+            </div>
+            <div class="imgEmp" style="margin:40px 0;">
               <img src="../../assets/img/563.png" alt="clean" />
               <div class="el-icon-right arrow"></div>
               <img src="../../assets/img/563w.png" alt="watermarked" />
@@ -234,7 +236,7 @@ a:active {
 /* Modules Styles*/
 .logo {
   display: inline-block;
-  margin-top: -10px;
+  margin-top: -15px;
   color: white;
   font-size: 35px;
   font-weight: bold;
@@ -309,7 +311,7 @@ a:active {
 
 .main-msg {
   color: rgb(255, 255, 255);
-  margin-top: 150px;
+  margin-top: 100px;
   text-align: center;
   background: rgba(225, 225, 225, 0.1);
 }

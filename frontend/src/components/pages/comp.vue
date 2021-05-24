@@ -64,7 +64,16 @@
         console.log(file);
       },
       getData(){
+        let pics =this.fileList.length;
+        if(pics == 2){
         this.$http.get("http://127.0.0.1:5000/comp").then(response => (this.imgdata = response.data));
+        }else{
+        const h = this.$createElement;
+        this.$notify({
+          title: '关于图像对比',
+          message: h('i', { style: 'color: teal'}, '为了正确计算结果，请上传两张图片~')
+        });
+        }
       },
       overload(){
         const h = this.$createElement;

@@ -91,7 +91,7 @@
             <el-alert
               v-if="this.changeMd === true"
               title="欢迎使用水印去除功能"
-              description="现在的水印去除模式为-文本图像"
+              description="水印去除模式-DE-GAN文档增强算法"
               type="success"
               center
               show-icon
@@ -100,7 +100,7 @@
             <el-alert
               v-if="this.changeMd === false"
               title="欢迎使用水印去除功能"
-              description="现在的水印去除模式为-自然图像"
+              description="水印去除模式-Noise2Noise噪声去除算法"
               type="success"
               center
               show-icon

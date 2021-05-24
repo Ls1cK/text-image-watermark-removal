@@ -13,7 +13,6 @@ import traceback
 ##邮箱验证码
 from flask_mail import Message,Mail
 
-
 ##去水印
 import sys
 from tensorflow import keras
@@ -175,7 +174,7 @@ def unwatermarkTW():
         test_image_p=split2(test_padding.reshape(1,h,w,1),1,h,w)
         predicted_list=[]
         for l in range(test_image_p.shape[0]):
-            with graph_dg.as_default():
+            with graph.as_default():
                 predicted_list.append(generator.predict(test_image_p[l].reshape(1,256,256,1)))
         predicted_image = np.array(predicted_list)#.reshape()
         predicted_image=merge_image2(predicted_image,h,w)
@@ -242,10 +241,8 @@ def unwatermarkIW():
 
         out_image = np.zeros((h, w * 1, 3), dtype=np.uint8)
         noise_image = val_noise_model(image)
-
-        with graph_n2n.as_default():
+        with graph.as_default():
             pred = model_n2n.predict(np.expand_dims(noise_image, 0))
-
         denoised_image = get_image(pred[0])
         out_image[:, :w] = denoised_image
 
@@ -406,7 +403,7 @@ def getSendCodeRequest():
 #获取登录参数及处理
 @app.route('/login',methods = ['POST'])
 def getLoginRequest():
-#查询用户名及密码是否匹配及存在
+#查询用户名及密码是否匹配及存在 注： username 为登录的邮箱账号
     username = request.json.get('username')
     password = request.json.get('password')
     #连接数据库,此前在数据库中创建数据库
@@ -416,7 +413,7 @@ def getLoginRequest():
         # 创建游标
         cursor = connection.cursor()
         # 操作sql
-        selectUserSql = "SELECT `username`, `password` FROM `account` WHERE username='" + username + "'"
+        selectUserSql = "SELECT `email`, `password` FROM `account` WHERE email='" + username + "'"
         print (selectUserSql)
         cursor.execute(selectUserSql)
         result = cursor.fetchone()
@@ -436,7 +433,7 @@ def reset_account():
         # 创建游标
         cursor = connection.cursor()
         # 更新数据
-        updateSql =  "UPDATE `account` SET password=  '" + password + "' WHERE username='" + username + "'"
+        updateSql =  "UPDATE `account` SET password=  '" + password + "' WHERE email='" + username + "'"
         print (updateSql)
         cursor.execute(updateSql)
         # 提交
@@ -455,7 +452,7 @@ def register():
         # 创建游标
         cursor = connection.cursor()
         # 插入数据
-        insertSql = "INSERT INTO `account` (`username`, `password`) VALUES ( '"+username + "','" + password + "')"
+        insertSql = "INSERT INTO `account` (`email`, `password`) VALUES ( '"+username + "','" + password + "')"
         print (insertSql)
         cursor.execute(insertSql)
         # 提交
@@ -466,10 +463,8 @@ def register():
     
 if __name__ == '__main__':
     # generator : DE-GAN 模型加载  model : Noise2Noise 模型加载  全局
-    global graph_dg, generator, graph_n2n, model_n2n
-    graph_dg = tf.get_default_graph()
-
-    graph_n2n = tf.get_default_graph()
+    global graph, generator, model_n2n
+    graph = tf.get_default_graph()
 
     #获取模型 DE-GAN
     generator = unet()
